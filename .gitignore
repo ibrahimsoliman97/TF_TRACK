@@ -96,3 +96,12 @@ ENV/
 
 # For mac
 .DS_Store
+
+research/object_detection/ibrahim_training/models
+research/object_detection/ibrahim_training/exports
+
+official/
+
+*.png
+*.jpg
+*.record
