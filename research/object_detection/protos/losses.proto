@@ -61,6 +61,16 @@ message Loss {
   // Only applies if expected_loss_weights is not NONE.
   // TODO(birdbrain): Move under ExpectedLossWeights.
   optional float desired_negative_sampling_ratio = 20 [default=3];
+
+  // embedding loss to use.
+  optional EmbeddingLoss embedding_loss = 21;
+
+  // embedding loss weight.
+  optional float embedding_weight = 22 [default=1.0];
+}
+
+message EmbeddingLoss {
+  optional float margin = 1 [default=1.0];
 }
 
 // Configuration for bounding box localization loss function.

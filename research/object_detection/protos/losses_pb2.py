@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='object_detection/protos/losses.proto',
   package='object_detection.protos',
   syntax='proto2',
-  serialized_pb=_b('\n$object_detection/protos/losses.proto\x12\x17object_detection.protos\"\xfe\x05\n\x04Loss\x12\x44\n\x11localization_loss\x18\x01 \x01(\x0b\x32).object_detection.protos.LocalizationLoss\x12H\n\x13\x63lassification_loss\x18\x02 \x01(\x0b\x32+.object_detection.protos.ClassificationLoss\x12\x45\n\x12hard_example_miner\x18\x03 \x01(\x0b\x32).object_detection.protos.HardExampleMiner\x12 \n\x15\x63lassification_weight\x18\x04 \x01(\x02:\x01\x31\x12\x1e\n\x13localization_weight\x18\x05 \x01(\x02:\x01\x31\x12M\n\x16random_example_sampler\x18\x06 \x01(\x0b\x32-.object_detection.protos.RandomExampleSampler\x12I\n\x11\x65qualization_loss\x18\x07 \x01(\x0b\x32..object_detection.protos.Loss.EqualizationLoss\x12V\n\x15\x65xpected_loss_weights\x18\x12 \x01(\x0e\x32\x31.object_detection.protos.Loss.ExpectedLossWeights:\x04NONE\x12#\n\x18min_num_negative_samples\x18\x13 \x01(\x02:\x01\x30\x12*\n\x1f\x64\x65sired_negative_sampling_ratio\x18\x14 \x01(\x02:\x01\x33\x1a?\n\x10\x45qualizationLoss\x12\x11\n\x06weight\x18\x01 \x01(\x02:\x01\x30\x12\x18\n\x10\x65xclude_prefixes\x18\x02 \x03(\t\"Y\n\x13\x45xpectedLossWeights\x12\x08\n\x04NONE\x10\x00\x12\x15\n\x11\x45XPECTED_SAMPLING\x10\x01\x12!\n\x1dREWEIGHTING_UNMATCHED_ANCHORS\x10\x02\"\xe7\x02\n\x10LocalizationLoss\x12J\n\x0bweighted_l2\x18\x01 \x01(\x0b\x32\x33.object_detection.protos.WeightedL2LocalizationLossH\x00\x12W\n\x12weighted_smooth_l1\x18\x02 \x01(\x0b\x32\x39.object_detection.protos.WeightedSmoothL1LocalizationLossH\x00\x12L\n\x0cweighted_iou\x18\x03 \x01(\x0b\x32\x34.object_detection.protos.WeightedIOULocalizationLossH\x00\x12K\n\x14l1_localization_loss\x18\x04 \x01(\x0b\x32+.object_detection.protos.L1LocalizationLossH\x00\x42\x13\n\x11localization_loss\">\n\x1aWeightedL2LocalizationLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\"V\n WeightedSmoothL1LocalizationLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\x12\x10\n\x05\x64\x65lta\x18\x02 \x01(\x02:\x01\x31\"\x1d\n\x1bWeightedIOULocalizationLoss\"\x14\n\x12L1LocalizationLoss\"\xeb\x04\n\x12\x43lassificationLoss\x12V\n\x10weighted_sigmoid\x18\x01 \x01(\x0b\x32:.object_detection.protos.WeightedSigmoidClassificationLossH\x00\x12V\n\x10weighted_softmax\x18\x02 \x01(\x0b\x32:.object_detection.protos.WeightedSoftmaxClassificationLossH\x00\x12j\n\x17weighted_logits_softmax\x18\x05 \x01(\x0b\x32G.object_detection.protos.WeightedSoftmaxClassificationAgainstLogitsLossH\x00\x12^\n\x14\x62ootstrapped_sigmoid\x18\x03 \x01(\x0b\x32>.object_detection.protos.BootstrappedSigmoidClassificationLossH\x00\x12Y\n\x16weighted_sigmoid_focal\x18\x04 \x01(\x0b\x32\x37.object_detection.protos.SigmoidFocalClassificationLossH\x00\x12g\n#penalty_reduced_logistic_focal_loss\x18\x06 \x01(\x0b\x32\x38.object_detection.protos.PenaltyReducedLogisticFocalLossH\x00\x42\x15\n\x13\x63lassification_loss\"E\n!WeightedSigmoidClassificationLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\"c\n\x1eSigmoidFocalClassificationLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\x12\x10\n\x05gamma\x18\x02 \x01(\x02:\x01\x32\x12\r\n\x05\x61lpha\x18\x03 \x01(\x02\"]\n!WeightedSoftmaxClassificationLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\x12\x16\n\x0blogit_scale\x18\x02 \x01(\x02:\x01\x31\"j\n.WeightedSoftmaxClassificationAgainstLogitsLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\x12\x16\n\x0blogit_scale\x18\x02 \x01(\x02:\x01\x31\"w\n%BootstrappedSigmoidClassificationLoss\x12\r\n\x05\x61lpha\x18\x01 \x01(\x02\x12\x1d\n\x0ehard_bootstrap\x18\x02 \x01(\x08:\x05\x66\x61lse\x12 \n\x11\x61nchorwise_output\x18\x03 \x01(\x08:\x05\x66\x61lse\">\n\x1fPenaltyReducedLogisticFocalLoss\x12\r\n\x05\x61lpha\x18\x01 \x01(\x02\x12\x0c\n\x04\x62\x65ta\x18\x02 \x01(\x02\"\xa1\x02\n\x10HardExampleMiner\x12\x1d\n\x11num_hard_examples\x18\x01 \x01(\x05:\x02\x36\x34\x12\x1a\n\riou_threshold\x18\x02 \x01(\x02:\x03\x30.7\x12K\n\tloss_type\x18\x03 \x01(\x0e\x32\x32.object_detection.protos.HardExampleMiner.LossType:\x04\x42OTH\x12%\n\x1amax_negatives_per_positive\x18\x04 \x01(\x05:\x01\x30\x12\"\n\x17min_negatives_per_image\x18\x05 \x01(\x05:\x01\x30\":\n\x08LossType\x12\x08\n\x04\x42OTH\x10\x00\x12\x12\n\x0e\x43LASSIFICATION\x10\x01\x12\x10\n\x0cLOCALIZATION\x10\x02\">\n\x14RandomExampleSampler\x12&\n\x18positive_sample_fraction\x18\x01 \x01(\x02:\x04\x30.01')
+  serialized_pb=_b('\n$object_detection/protos/losses.proto\x12\x17object_detection.protos\"\xdb\x06\n\x04Loss\x12\x44\n\x11localization_loss\x18\x01 \x01(\x0b\x32).object_detection.protos.LocalizationLoss\x12H\n\x13\x63lassification_loss\x18\x02 \x01(\x0b\x32+.object_detection.protos.ClassificationLoss\x12\x45\n\x12hard_example_miner\x18\x03 \x01(\x0b\x32).object_detection.protos.HardExampleMiner\x12 \n\x15\x63lassification_weight\x18\x04 \x01(\x02:\x01\x31\x12\x1e\n\x13localization_weight\x18\x05 \x01(\x02:\x01\x31\x12M\n\x16random_example_sampler\x18\x06 \x01(\x0b\x32-.object_detection.protos.RandomExampleSampler\x12I\n\x11\x65qualization_loss\x18\x07 \x01(\x0b\x32..object_detection.protos.Loss.EqualizationLoss\x12V\n\x15\x65xpected_loss_weights\x18\x12 \x01(\x0e\x32\x31.object_detection.protos.Loss.ExpectedLossWeights:\x04NONE\x12#\n\x18min_num_negative_samples\x18\x13 \x01(\x02:\x01\x30\x12*\n\x1f\x64\x65sired_negative_sampling_ratio\x18\x14 \x01(\x02:\x01\x33\x12>\n\x0e\x65mbedding_loss\x18\x15 \x01(\x0b\x32&.object_detection.protos.EmbeddingLoss\x12\x1b\n\x10\x65mbedding_weight\x18\x16 \x01(\x02:\x01\x31\x1a?\n\x10\x45qualizationLoss\x12\x11\n\x06weight\x18\x01 \x01(\x02:\x01\x30\x12\x18\n\x10\x65xclude_prefixes\x18\x02 \x03(\t\"Y\n\x13\x45xpectedLossWeights\x12\x08\n\x04NONE\x10\x00\x12\x15\n\x11\x45XPECTED_SAMPLING\x10\x01\x12!\n\x1dREWEIGHTING_UNMATCHED_ANCHORS\x10\x02\"\"\n\rEmbeddingLoss\x12\x11\n\x06margin\x18\x01 \x01(\x02:\x01\x31\"\xe7\x02\n\x10LocalizationLoss\x12J\n\x0bweighted_l2\x18\x01 \x01(\x0b\x32\x33.object_detection.protos.WeightedL2LocalizationLossH\x00\x12W\n\x12weighted_smooth_l1\x18\x02 \x01(\x0b\x32\x39.object_detection.protos.WeightedSmoothL1LocalizationLossH\x00\x12L\n\x0cweighted_iou\x18\x03 \x01(\x0b\x32\x34.object_detection.protos.WeightedIOULocalizationLossH\x00\x12K\n\x14l1_localization_loss\x18\x04 \x01(\x0b\x32+.object_detection.protos.L1LocalizationLossH\x00\x42\x13\n\x11localization_loss\">\n\x1aWeightedL2LocalizationLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\"V\n WeightedSmoothL1LocalizationLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\x12\x10\n\x05\x64\x65lta\x18\x02 \x01(\x02:\x01\x31\"\x1d\n\x1bWeightedIOULocalizationLoss\"\x14\n\x12L1LocalizationLoss\"\xeb\x04\n\x12\x43lassificationLoss\x12V\n\x10weighted_sigmoid\x18\x01 \x01(\x0b\x32:.object_detection.protos.WeightedSigmoidClassificationLossH\x00\x12V\n\x10weighted_softmax\x18\x02 \x01(\x0b\x32:.object_detection.protos.WeightedSoftmaxClassificationLossH\x00\x12j\n\x17weighted_logits_softmax\x18\x05 \x01(\x0b\x32G.object_detection.protos.WeightedSoftmaxClassificationAgainstLogitsLossH\x00\x12^\n\x14\x62ootstrapped_sigmoid\x18\x03 \x01(\x0b\x32>.object_detection.protos.BootstrappedSigmoidClassificationLossH\x00\x12Y\n\x16weighted_sigmoid_focal\x18\x04 \x01(\x0b\x32\x37.object_detection.protos.SigmoidFocalClassificationLossH\x00\x12g\n#penalty_reduced_logistic_focal_loss\x18\x06 \x01(\x0b\x32\x38.object_detection.protos.PenaltyReducedLogisticFocalLossH\x00\x42\x15\n\x13\x63lassification_loss\"E\n!WeightedSigmoidClassificationLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\"c\n\x1eSigmoidFocalClassificationLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\x12\x10\n\x05gamma\x18\x02 \x01(\x02:\x01\x32\x12\r\n\x05\x61lpha\x18\x03 \x01(\x02\"]\n!WeightedSoftmaxClassificationLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\x12\x16\n\x0blogit_scale\x18\x02 \x01(\x02:\x01\x31\"j\n.WeightedSoftmaxClassificationAgainstLogitsLoss\x12 \n\x11\x61nchorwise_output\x18\x01 \x01(\x08:\x05\x66\x61lse\x12\x16\n\x0blogit_scale\x18\x02 \x01(\x02:\x01\x31\"w\n%BootstrappedSigmoidClassificationLoss\x12\r\n\x05\x61lpha\x18\x01 \x01(\x02\x12\x1d\n\x0ehard_bootstrap\x18\x02 \x01(\x08:\x05\x66\x61lse\x12 \n\x11\x61nchorwise_output\x18\x03 \x01(\x08:\x05\x66\x61lse\">\n\x1fPenaltyReducedLogisticFocalLoss\x12\r\n\x05\x61lpha\x18\x01 \x01(\x02\x12\x0c\n\x04\x62\x65ta\x18\x02 \x01(\x02\"\xa1\x02\n\x10HardExampleMiner\x12\x1d\n\x11num_hard_examples\x18\x01 \x01(\x05:\x02\x36\x34\x12\x1a\n\riou_threshold\x18\x02 \x01(\x02:\x03\x30.7\x12K\n\tloss_type\x18\x03 \x01(\x0e\x32\x32.object_detection.protos.HardExampleMiner.LossType:\x04\x42OTH\x12%\n\x1amax_negatives_per_positive\x18\x04 \x01(\x05:\x01\x30\x12\"\n\x17min_negatives_per_image\x18\x05 \x01(\x05:\x01\x30\":\n\x08LossType\x12\x08\n\x04\x42OTH\x10\x00\x12\x12\n\x0e\x43LASSIFICATION\x10\x01\x12\x10\n\x0cLOCALIZATION\x10\x02\">\n\x14RandomExampleSampler\x12&\n\x18positive_sample_fraction\x18\x01 \x01(\x02:\x04\x30.01')
 )
 
 
@@ -45,8 +45,8 @@ _LOSS_EXPECTEDLOSSWEIGHTS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=743,
-  serialized_end=832,
+  serialized_start=836,
+  serialized_end=925,
 )
 _sym_db.RegisterEnumDescriptor(_LOSS_EXPECTEDLOSSWEIGHTS)
 
@@ -71,8 +71,8 @@ _HARDEXAMPLEMINER_LOSSTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2815,
-  serialized_end=2873,
+  serialized_start=2944,
+  serialized_end=3002,
 )
 _sym_db.RegisterEnumDescriptor(_HARDEXAMPLEMINER_LOSSTYPE)
 
@@ -110,8 +110,8 @@ _LOSS_EQUALIZATIONLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=678,
-  serialized_end=741,
+  serialized_start=771,
+  serialized_end=834,
 )
 
 _LOSS = _descriptor.Descriptor(
@@ -191,6 +191,20 @@ _LOSS = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='embedding_loss', full_name='object_detection.protos.Loss.embedding_loss', index=10,
+      number=21, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='embedding_weight', full_name='object_detection.protos.Loss.embedding_weight', index=11,
+      number=22, type=2, cpp_type=6, label=1,
+      has_default_value=True, default_value=float(1),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -205,7 +219,38 @@ _LOSS = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=66,
-  serialized_end=832,
+  serialized_end=925,
+)
+
+
+_EMBEDDINGLOSS = _descriptor.Descriptor(
+  name='EmbeddingLoss',
+  full_name='object_detection.protos.EmbeddingLoss',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='margin', full_name='object_detection.protos.EmbeddingLoss.margin', index=0,
+      number=1, type=2, cpp_type=6, label=1,
+      has_default_value=True, default_value=float(1),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=927,
+  serialized_end=961,
 )
 
 
@@ -259,8 +304,8 @@ _LOCALIZATIONLOSS = _descriptor.Descriptor(
       name='localization_loss', full_name='object_detection.protos.LocalizationLoss.localization_loss',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=835,
-  serialized_end=1194,
+  serialized_start=964,
+  serialized_end=1323,
 )
 
 
@@ -290,8 +335,8 @@ _WEIGHTEDL2LOCALIZATIONLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1196,
-  serialized_end=1258,
+  serialized_start=1325,
+  serialized_end=1387,
 )
 
 
@@ -328,8 +373,8 @@ _WEIGHTEDSMOOTHL1LOCALIZATIONLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1260,
-  serialized_end=1346,
+  serialized_start=1389,
+  serialized_end=1475,
 )
 
 
@@ -352,8 +397,8 @@ _WEIGHTEDIOULOCALIZATIONLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1348,
-  serialized_end=1377,
+  serialized_start=1477,
+  serialized_end=1506,
 )
 
 
@@ -376,8 +421,8 @@ _L1LOCALIZATIONLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1379,
-  serialized_end=1399,
+  serialized_start=1508,
+  serialized_end=1528,
 )
 
 
@@ -445,8 +490,8 @@ _CLASSIFICATIONLOSS = _descriptor.Descriptor(
       name='classification_loss', full_name='object_detection.protos.ClassificationLoss.classification_loss',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1402,
-  serialized_end=2021,
+  serialized_start=1531,
+  serialized_end=2150,
 )
 
 
@@ -476,8 +521,8 @@ _WEIGHTEDSIGMOIDCLASSIFICATIONLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2023,
-  serialized_end=2092,
+  serialized_start=2152,
+  serialized_end=2221,
 )
 
 
@@ -521,8 +566,8 @@ _SIGMOIDFOCALCLASSIFICATIONLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2094,
-  serialized_end=2193,
+  serialized_start=2223,
+  serialized_end=2322,
 )
 
 
@@ -559,8 +604,8 @@ _WEIGHTEDSOFTMAXCLASSIFICATIONLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2195,
-  serialized_end=2288,
+  serialized_start=2324,
+  serialized_end=2417,
 )
 
 
@@ -597,8 +642,8 @@ _WEIGHTEDSOFTMAXCLASSIFICATIONAGAINSTLOGITSLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2290,
-  serialized_end=2396,
+  serialized_start=2419,
+  serialized_end=2525,
 )
 
 
@@ -642,8 +687,8 @@ _BOOTSTRAPPEDSIGMOIDCLASSIFICATIONLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2398,
-  serialized_end=2517,
+  serialized_start=2527,
+  serialized_end=2646,
 )
 
 
@@ -680,8 +725,8 @@ _PENALTYREDUCEDLOGISTICFOCALLOSS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2519,
-  serialized_end=2581,
+  serialized_start=2648,
+  serialized_end=2710,
 )
 
 
@@ -740,8 +785,8 @@ _HARDEXAMPLEMINER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2584,
-  serialized_end=2873,
+  serialized_start=2713,
+  serialized_end=3002,
 )
 
 
@@ -771,8 +816,8 @@ _RANDOMEXAMPLESAMPLER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2875,
-  serialized_end=2937,
+  serialized_start=3004,
+  serialized_end=3066,
 )
 
 _LOSS_EQUALIZATIONLOSS.containing_type = _LOSS
@@ -782,6 +827,7 @@ _LOSS.fields_by_name['hard_example_miner'].message_type = _HARDEXAMPLEMINER
 _LOSS.fields_by_name['random_example_sampler'].message_type = _RANDOMEXAMPLESAMPLER
 _LOSS.fields_by_name['equalization_loss'].message_type = _LOSS_EQUALIZATIONLOSS
 _LOSS.fields_by_name['expected_loss_weights'].enum_type = _LOSS_EXPECTEDLOSSWEIGHTS
+_LOSS.fields_by_name['embedding_loss'].message_type = _EMBEDDINGLOSS
 _LOSS_EXPECTEDLOSSWEIGHTS.containing_type = _LOSS
 _LOCALIZATIONLOSS.fields_by_name['weighted_l2'].message_type = _WEIGHTEDL2LOCALIZATIONLOSS
 _LOCALIZATIONLOSS.fields_by_name['weighted_smooth_l1'].message_type = _WEIGHTEDSMOOTHL1LOCALIZATIONLOSS
@@ -826,6 +872,7 @@ _CLASSIFICATIONLOSS.fields_by_name['penalty_reduced_logistic_focal_loss'].contai
 _HARDEXAMPLEMINER.fields_by_name['loss_type'].enum_type = _HARDEXAMPLEMINER_LOSSTYPE
 _HARDEXAMPLEMINER_LOSSTYPE.containing_type = _HARDEXAMPLEMINER
 DESCRIPTOR.message_types_by_name['Loss'] = _LOSS
+DESCRIPTOR.message_types_by_name['EmbeddingLoss'] = _EMBEDDINGLOSS
 DESCRIPTOR.message_types_by_name['LocalizationLoss'] = _LOCALIZATIONLOSS
 DESCRIPTOR.message_types_by_name['WeightedL2LocalizationLoss'] = _WEIGHTEDL2LOCALIZATIONLOSS
 DESCRIPTOR.message_types_by_name['WeightedSmoothL1LocalizationLoss'] = _WEIGHTEDSMOOTHL1LOCALIZATIONLOSS
@@ -856,6 +903,13 @@ Loss = _reflection.GeneratedProtocolMessageType('Loss', (_message.Message,), dic
   ))
 _sym_db.RegisterMessage(Loss)
 _sym_db.RegisterMessage(Loss.EqualizationLoss)
+
+EmbeddingLoss = _reflection.GeneratedProtocolMessageType('EmbeddingLoss', (_message.Message,), dict(
+  DESCRIPTOR = _EMBEDDINGLOSS,
+  __module__ = 'object_detection.protos.losses_pb2'
+  # @@protoc_insertion_point(class_scope:object_detection.protos.EmbeddingLoss)
+  ))
+_sym_db.RegisterMessage(EmbeddingLoss)
 
 LocalizationLoss = _reflection.GeneratedProtocolMessageType('LocalizationLoss', (_message.Message,), dict(
   DESCRIPTOR = _LOCALIZATIONLOSS,

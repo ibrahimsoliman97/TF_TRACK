@@ -145,6 +145,10 @@ def _prepare_groundtruth_for_eval(detection_model, class_agnostic,
     groundtruth[input_data_fields.groundtruth_group_of] = tf.stack(
         detection_model.groundtruth_lists(fields.BoxListFields.group_of))
 
+  if detection_model.groundtruth_has_field(fields.BoxListFields.re_id):
+        groundtruth[input_data_fields.groundtruth_re_id] = tf.stack(
+        detection_model.groundtruth_lists(fields.BoxListFields.re_id))
+
   if detection_model.groundtruth_has_field(
       fields.InputDataFields.groundtruth_labeled_classes):
     labeled_classes_list = detection_model.groundtruth_lists(
@@ -223,7 +227,8 @@ def unstack_batch(tensor_dict, unpad_groundtruth_tensors=True):
         fields.InputDataFields.groundtruth_difficult,
         fields.InputDataFields.groundtruth_is_crowd,
         fields.InputDataFields.groundtruth_area,
-        fields.InputDataFields.groundtruth_weights
+        fields.InputDataFields.groundtruth_weights,
+        fields.InputDataFields.groundtruth_re_id
     ]).intersection(set(unbatched_tensor_dict.keys()))
 
     for key in unpad_keys:
@@ -289,6 +294,9 @@ def provide_groundtruth(model, labels):
   if fields.InputDataFields.groundtruth_labeled_classes in labels:
     gt_labeled_classes = labels[
         fields.InputDataFields.groundtruth_labeled_classes]
+  gt_re_id=None
+  if fields.InputDataFields.groundtruth_re_id in labels:
+    gt_re_id = labels[fields.InputDataFields.groundtruth_re_id]
   model.provide_groundtruth(
       groundtruth_boxes_list=gt_boxes_list,
       groundtruth_classes_list=gt_classes_list,
@@ -300,7 +308,8 @@ def provide_groundtruth(model, labels):
       groundtruth_weights_list=gt_weights_list,
       groundtruth_is_crowd_list=gt_is_crowd_list,
       groundtruth_group_of_list=gt_group_of_list,
-      groundtruth_area_list=gt_area_list)
+      groundtruth_area_list=gt_area_list,
+      groundtruth_re_id=gt_re_id)
 
 
 def create_model_fn(detection_model_fn, configs, hparams, use_tpu=False,

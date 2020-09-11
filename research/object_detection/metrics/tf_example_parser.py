@@ -116,6 +116,8 @@ class TfExampleDetectionAndGTParser(data_parser.DataToNumpyParser):
             Int64Parser(fields.TfExampleFields.object_group_of),
         fields.InputDataFields.groundtruth_image_classes:
             Int64Parser(fields.TfExampleFields.image_class_label),
+        fields.InputDataFields.groundtruth_re_id:
+            Int64Parser(fields.TfExampleFields.object_re_id),
     }
 
   def parse(self, tf_example):

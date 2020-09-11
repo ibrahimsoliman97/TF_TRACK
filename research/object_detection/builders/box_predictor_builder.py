@@ -30,6 +30,7 @@ from object_detection.predictors.heads import keras_class_head
 from object_detection.predictors.heads import keras_mask_head
 from object_detection.predictors.heads import mask_head
 from object_detection.protos import box_predictor_pb2
+from object_detection.predictors.heads import embedding_head
 
 
 def build_convolutional_box_predictor(is_training,
@@ -42,6 +43,7 @@ def build_convolutional_box_predictor(is_training,
                                       dropout_keep_prob,
                                       kernel_size,
                                       box_code_size,
+                                      embedding_size = 0,
                                       apply_sigmoid_to_scores=False,
                                       add_background_class=True,
                                       class_prediction_bias_init=0.0,
@@ -101,6 +103,15 @@ def build_convolutional_box_predictor(is_training,
       apply_sigmoid_to_scores=apply_sigmoid_to_scores,
       class_prediction_bias_init=class_prediction_bias_init,
       use_depthwise=use_depthwise)
+  if embedding_size:
+    other_heads = { "embedding" : embedding_head.ConvolutionalEmbeddingHead(
+      is_training=is_training,
+      embedding_size=embedding_size,
+      kernel_size=kernel_size,
+      use_depthwise=use_depthwise)
+    }
+  else:
+    other_heads = {}
   other_heads = {}
   return convolutional_box_predictor.ConvolutionalBoxPredictor(
       is_training=is_training,
@@ -703,6 +714,7 @@ def build(argscope_fn, box_predictor_config, is_training, num_classes,
         use_dropout=config_box_predictor.use_dropout,
         dropout_keep_prob=config_box_predictor.dropout_keep_probability,
         box_code_size=config_box_predictor.box_code_size,
+        embedding_size=config_box_predictor.embedding_size,
         kernel_size=config_box_predictor.kernel_size,
         num_layers_before_predictor=(
             config_box_predictor.num_layers_before_predictor),

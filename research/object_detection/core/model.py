@@ -300,7 +300,8 @@ class DetectionModel(six.with_metaclass(abc.ABCMeta, _BaseClass)):
                           groundtruth_group_of_list=None,
                           groundtruth_area_list=None,
                           is_annotated_list=None,
-                          groundtruth_labeled_classes=None):
+                          groundtruth_labeled_classes=None,
+                          groundtruth_re_id=None):
     """Provide groundtruth tensors.
 
     Args:
@@ -377,6 +378,9 @@ class DetectionModel(six.with_metaclass(abc.ABCMeta, _BaseClass)):
       self._groundtruth_lists[
           fields.InputDataFields
           .groundtruth_labeled_classes] = groundtruth_labeled_classes
+    if groundtruth_re_id:
+      self._groundtruth_lists[
+          fields.BoxListFields.re_id] = groundtruth_re_id
 
   @abc.abstractmethod
   def regularization_losses(self):

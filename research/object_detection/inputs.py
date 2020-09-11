@@ -448,6 +448,7 @@ def pad_input_data_to_static_shapes(tensor_dict,
       fields.InputDataFields.groundtruth_image_classes: [num_classes],
       fields.InputDataFields.groundtruth_image_confidences: [num_classes],
       fields.InputDataFields.groundtruth_labeled_classes: [num_classes],
+      fields.InputDataFields.groundtruth_re_id: [max_num_boxes],
   }
 
   if fields.InputDataFields.original_image in tensor_dict:
@@ -572,6 +573,7 @@ def _get_labels_dict(input_dict):
       fields.InputDataFields.groundtruth_difficult,
       fields.InputDataFields.groundtruth_keypoint_visibilities,
       fields.InputDataFields.groundtruth_keypoint_weights,
+      fields.InputDataFields.groundtruth_re_id,
   ]
 
   for key in optional_label_keys:

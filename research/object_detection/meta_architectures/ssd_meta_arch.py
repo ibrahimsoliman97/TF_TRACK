@@ -273,6 +273,8 @@ class SSDMetaArch(model.DetectionModel):
                localization_loss_weight,
                normalize_loss_by_num_matches,
                hard_example_miner,
+               embedding_loss,
+               embedding_weight,
                target_assigner_instance,
                add_summaries=True,
                normalize_loc_loss_by_codesize=False,
@@ -420,6 +422,8 @@ class SSDMetaArch(model.DetectionModel):
     self._hard_example_miner = hard_example_miner
     self._random_example_sampler = random_example_sampler
     self._parallel_iterations = 16
+    self._embedding_loss = embedding_loss
+    self._embedding_weight = embedding_weight
 
     self._image_resizer_fn = image_resizer_fn
     self._non_max_suppression_fn = non_max_suppression_fn
@@ -615,6 +619,8 @@ class SSDMetaArch(model.DetectionModel):
       if (prediction_key == 'box_encodings' and prediction.shape.ndims == 4 and
           prediction.shape[2] == 1):
         prediction = tf.squeeze(prediction, axis=2)
+      if (prediction_key == 'embedding' and prediction.shape[2] == 1):
+          prediction = tf.squeeze(prediction, axis=2)  
       predictions_dict[prediction_key] = prediction
     if self._return_raw_detections_during_predict:
       predictions_dict.update(self._raw_detections_and_feature_map_inds(
@@ -726,7 +732,8 @@ class SSDMetaArch(model.DetectionModel):
           box_encodings, prediction_dict['anchors'])
       detection_boxes = tf.identity(detection_boxes, 'raw_box_locations')
       detection_boxes = tf.expand_dims(detection_boxes, axis=2)
-
+      embedding = None
+      
       detection_scores_with_background = self._score_conversion_fn(
           class_predictions_with_background)
       detection_scores = tf.identity(detection_scores_with_background,
@@ -757,6 +764,10 @@ class SSDMetaArch(model.DetectionModel):
         additional_fields.update({
             'anchor_indices': tf.cast(batch_anchor_indices, tf.float32),
         })
+      if 'embedding' in prediction_dict:
+        embedding = prediction_dict['embedding']
+        embedding = tf.identity(embedding, 'raw_embedding')
+        additional_fields[fields.DetectionResultFields.embedding] = embedding
       if detection_keypoints is not None:
         detection_keypoints = tf.identity(
             detection_keypoints, 'raw_keypoint_locations')
@@ -805,6 +816,12 @@ class SSDMetaArch(model.DetectionModel):
       if nmsed_masks is not None:
         detection_dict[
             fields.DetectionResultFields.detection_masks] = nmsed_masks
+      if (nmsed_additional_fields is not None and
+          fields.DetectionResultFields.embedding in nmsed_additional_fields):
+        detection_dict[fields.DetectionResultFields.embedding] = (
+            nmsed_additional_fields[fields.DetectionResultFields.embedding])
+      if embedding is not None:
+        detection_dict[fields.DetectionResultFields.raw_embedding] = embedding
       return detection_dict
 
   def loss(self, prediction_dict, true_image_shapes, scope=None):
@@ -842,11 +859,14 @@ class SSDMetaArch(model.DetectionModel):
       confidences = None
       if self.groundtruth_has_field(fields.BoxListFields.confidences):
         confidences = self.groundtruth_lists(fields.BoxListFields.confidences)
+      re_id_targets = None
+      if self.groundtruth_has_field(fields.BoxListFields.re_id):
+        re_id_targets = self.groundtruth_lists(fields.BoxListFields.re_id)
       (batch_cls_targets, batch_cls_weights, batch_reg_targets,
-       batch_reg_weights, batch_match) = self._assign_targets(
+       batch_reg_weights, batch_match, batch_reid_tragets) = self._assign_targets(
            self.groundtruth_lists(fields.BoxListFields.boxes),
            self.groundtruth_lists(fields.BoxListFields.classes),
-           keypoints, weights, confidences)
+           keypoints, weights, confidences, re_id_targets)
       match_list = [matcher.Match(match) for match in tf.unstack(batch_match)]
       if self._add_summaries:
         self._summarize_target_assignment(
@@ -886,6 +906,16 @@ class SSDMetaArch(model.DetectionModel):
           batch_cls_targets,
           weights=batch_cls_weights,
           losses_mask=losses_mask)
+
+      embedding_loss =0.0
+      if self._embedding_loss:
+          embedding_loss  = self._embedding_loss(
+            prediction_dict['embedding'],
+            batch_reid_tragets,
+            ignore_nan_targets=False,
+            weights=batch_reg_weights,
+            losses_mask=losses_mask
+          )
 
       if self._expected_loss_weights_fn:
         # Need to compute losses for assigned targets against the
@@ -935,7 +965,8 @@ class SSDMetaArch(model.DetectionModel):
         cls_losses = ops.reduce_sum_trailing_dimensions(cls_losses, ndims=2)
         localization_loss = tf.reduce_sum(location_losses)
         classification_loss = tf.reduce_sum(cls_losses)
-
+        embedding_loss = tf.reduce_sum(embedding_loss)
+      
       # Optionally normalize by number of positive matches
       normalizer = tf.constant(1.0, dtype=tf.float32)
       if self._normalize_loss_by_num_matches:
@@ -954,9 +985,14 @@ class SSDMetaArch(model.DetectionModel):
                                          normalizer), classification_loss,
                                         name='classification_loss')
 
+      if self._embedding_loss:
+        embedding_loss = tf.multiply((self._embedding_weight /normalizer), embedding_loss,
+                                      name='embedding_loss')
+
       loss_dict = {
           'Loss/localization_loss': localization_loss,
-          'Loss/classification_loss': classification_loss
+          'Loss/classification_loss': classification_loss,
+          'Loss/embedding_loss': embedding_loss
       }
 
 
@@ -1005,7 +1041,8 @@ class SSDMetaArch(model.DetectionModel):
                       groundtruth_classes_list,
                       groundtruth_keypoints_list=None,
                       groundtruth_weights_list=None,
-                      groundtruth_confidences_list=None):
+                      groundtruth_confidences_list=None,
+                      groundtruth_re_id=None):
     """Assign groundtruth targets.
 
     Adds a background class to each one-hot encoding of groundtruth classes
@@ -1062,6 +1099,10 @@ class SSDMetaArch(model.DetectionModel):
     else:
       groundtruth_classes_with_background_list = groundtruth_classes_list
 
+    if groundtruth_re_id:
+      for boxlist, re_id in zip(
+          groundtruth_boxlists, groundtruth_re_id):
+        boxlist.add_field(fields.BoxListFields.re_id, re_id)
     if groundtruth_keypoints_list is not None:
       for boxlist, keypoints in zip(
           groundtruth_boxlists, groundtruth_keypoints_list):
@@ -1082,8 +1123,8 @@ class SSDMetaArch(model.DetectionModel):
           self.anchors,
           groundtruth_boxlists,
           groundtruth_classes_with_background_list,
-          self._unmatched_class_label,
-          groundtruth_weights_list)
+          unmatched_class_label=self._unmatched_class_label,
+          gt_weights_batch=groundtruth_weights_list)
 
   def _summarize_target_assignment(self, groundtruth_boxes_list, match_list):
     """Creates tensorflow summaries for the input boxes and anchors.

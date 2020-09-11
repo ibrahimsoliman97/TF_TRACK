@@ -260,6 +260,8 @@ class TfExampleDecoder(data_decoder.DataDecoder):
             tf.VarLenFeature(tf.int64),
         'image/object/weight':
             tf.VarLenFeature(tf.float32),
+        'image/object/re_id':
+            tf.VarLenFeature(tf.int64),
 
     }
     # We are checking `dct_method` instead of passing it directly in order to
@@ -310,6 +312,8 @@ class TfExampleDecoder(data_decoder.DataDecoder):
             slim_example_decoder.Tensor('image/object/group_of')),
         fields.InputDataFields.groundtruth_weights: (
             slim_example_decoder.Tensor('image/object/weight')),
+        fields.InputDataFields.groundtruth_re_id: (
+            slim_example_decoder.Tensor('image/object/re_id')),
 
     }
     if load_multiclass_scores:
@@ -554,6 +558,7 @@ class TfExampleDecoder(data_decoder.DataDecoder):
           fields.InputDataFields.groundtruth_area,
           fields.InputDataFields.groundtruth_boxes,
           fields.InputDataFields.groundtruth_weights,
+          fields.InputDataFields.groundtruth_re_id,
       ]
 
       def expand_field(field_name):

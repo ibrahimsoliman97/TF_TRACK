@@ -197,7 +197,7 @@ class TargetAssigner(object):
                                                            anchors)
       match = self._matcher.match(match_quality_matrix,
                                   valid_rows=tf.greater(groundtruth_weights, 0))
-      reg_targets = self._create_regression_targets(anchors,
+      reg_targets, re_id_targets = self._create_regression_targets(anchors,
                                                     groundtruth_boxes,
                                                     match)
       cls_targets = self._create_classification_targets(groundtruth_labels,
@@ -225,7 +225,7 @@ class TargetAssigner(object):
       cls_weights = self._reset_target_shape(cls_weights, num_anchors)
 
     return (cls_targets, cls_weights, reg_targets, reg_weights,
-            match.match_results)
+            match.match_results, re_id_targets)
 
   def _reset_target_shape(self, target, num_anchors):
     """Sets the static shape of the target.
@@ -268,6 +268,15 @@ class TargetAssigner(object):
           ignored_value=tf.zeros(groundtruth_keypoints.get_shape()[1:]))
       matched_gt_boxlist.add_field(fields.BoxListFields.keypoints,
                                    matched_keypoints)
+    
+    if groundtruth_boxes.has_field(fields.BoxListFields.re_id):
+      groundtruth_re_id = groundtruth_boxes.get_field(
+          fields.BoxListFields.re_id)
+      matched_re_id = match.gather_based_on_match(
+          tf.cast(groundtruth_re_id, tf.float32),
+          unmatched_value=tf.zeros(groundtruth_re_id.get_shape()[1:]),
+          ignored_value=tf.zeros(groundtruth_re_id.get_shape()[1:]))
+      
     matched_reg_targets = self._box_coder.encode(matched_gt_boxlist, anchors)
     match_results_shape = shape_utils.combined_static_and_dynamic_shape(
         match.match_results)
@@ -279,7 +288,12 @@ class TargetAssigner(object):
     reg_targets = tf.where(matched_anchors_mask,
                            matched_reg_targets,
                            unmatched_ignored_reg_targets)
-    return reg_targets
+    re_id_targets = None
+    if groundtruth_boxes.has_field(fields.BoxListFields.re_id):
+      re_id_targets = tf.where(matched_anchors_mask,
+                           matched_re_id,
+                           tf.zeros(tf.shape(matched_re_id), tf.float32))
+    return reg_targets, re_id_targets
 
   def _default_regression_target(self):
     """Returns the default target for anchors to regress to.
@@ -444,6 +458,7 @@ def batch_assign(target_assigner,
                  anchors_batch,
                  gt_box_batch,
                  gt_class_targets_batch,
+                 gt_re_id_batch=None,
                  unmatched_class_label=None,
                  gt_weights_batch=None):
   """Batched assignment of classification and regression targets.
@@ -502,26 +517,30 @@ def batch_assign(target_assigner,
   cls_weights_list = []
   reg_targets_list = []
   reg_weights_list = []
+  re_id_targets_list = []
   match_list = []
   if gt_weights_batch is None:
     gt_weights_batch = [None] * len(gt_class_targets_batch)
   for anchors, gt_boxes, gt_class_targets, gt_weights in zip(
       anchors_batch, gt_box_batch, gt_class_targets_batch, gt_weights_batch):
     (cls_targets, cls_weights,
-     reg_targets, reg_weights, match) = target_assigner.assign(
+     reg_targets, reg_weights, match, re_id_targets) = target_assigner.assign(
          anchors, gt_boxes, gt_class_targets, unmatched_class_label, gt_weights)
     cls_targets_list.append(cls_targets)
     cls_weights_list.append(cls_weights)
     reg_targets_list.append(reg_targets)
     reg_weights_list.append(reg_weights)
+    if re_id_targets is not None:
+      re_id_targets_list.append(re_id_targets)
     match_list.append(match)
   batch_cls_targets = tf.stack(cls_targets_list)
   batch_cls_weights = tf.stack(cls_weights_list)
   batch_reg_targets = tf.stack(reg_targets_list)
   batch_reg_weights = tf.stack(reg_weights_list)
   batch_match = tf.stack(match_list)
+  batch_re_id = tf.stack(re_id_targets_list)
   return (batch_cls_targets, batch_cls_weights, batch_reg_targets,
-          batch_reg_weights, batch_match)
+          batch_reg_weights, batch_match, batch_re_id)
 
 
 # Assign an alias to avoid large refactor of existing users.

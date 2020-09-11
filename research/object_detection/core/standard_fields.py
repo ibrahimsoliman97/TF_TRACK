@@ -111,6 +111,7 @@ class InputDataFields(object):
   groundtruth_keypoints = 'groundtruth_keypoints'
   groundtruth_keypoint_visibilities = 'groundtruth_keypoint_visibilities'
   groundtruth_keypoint_weights = 'groundtruth_keypoint_weights'
+  groundtruth_re_id = 'groundtruth_re_id'
   groundtruth_label_weights = 'groundtruth_label_weights'
   groundtruth_weights = 'groundtruth_weights'
   groundtruth_dp_num_points = 'groundtruth_dp_num_points'
@@ -168,6 +169,8 @@ class DetectionResultFields(object):
   raw_detection_boxes = 'raw_detection_boxes'
   raw_detection_scores = 'raw_detection_scores'
   detection_anchor_indices = 'detection_anchor_indices'
+  raw_embedding = 'raw_embedding'
+  embedding = 'nms_embedding'
 
 
 class BoxListFields(object):
@@ -198,6 +201,7 @@ class BoxListFields(object):
   keypoint_heatmaps = 'keypoint_heatmaps'
   is_crowd = 'is_crowd'
   group_of = 'group_of'
+  re_id = 're_id'
 
 
 class PredictionFields(object):
@@ -278,6 +282,7 @@ class TfExampleFields(object):
   object_bbox_ymax = 'image/object/bbox/ymax'
   object_bbox_xmax = 'image/object/bbox/xmax'
   object_view = 'image/object/view'
+  object_re_id = 'image/object/re_id'
   object_truncated = 'image/object/truncated'
   object_occluded = 'image/object/occluded'
   object_difficult = 'image/object/difficult'

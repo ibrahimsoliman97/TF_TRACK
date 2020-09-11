@@ -50,6 +50,13 @@ def build(loss_config):
       loss_config.localization_loss)
   classification_weight = loss_config.classification_weight
   localization_weight = loss_config.localization_weight
+  embedding_loss = None
+  embedding_weight = None
+  if loss_config.HasField('embedding_loss'):
+    embedding_loss = _build_embedding_loss(
+      loss_config.embedding_loss
+    )
+    embedding_weight = loss_config.embedding_weight
   hard_example_miner = None
   if loss_config.HasField('hard_example_miner'):
     if (loss_config.classification_loss.WhichOneof('classification_loss') ==
@@ -89,7 +96,7 @@ def build(loss_config):
 
   return (classification_loss, localization_loss, classification_weight,
           localization_weight, hard_example_miner, random_example_sampler,
-          expected_loss_weights_fn)
+          expected_loss_weights_fn, embedding_loss, embedding_weight)
 
 
 def build_hard_example_miner(config,
@@ -256,5 +263,23 @@ def _build_classification_loss(loss_config):
     config = loss_config.penalty_reduced_logistic_focal_loss
     return losses.PenaltyReducedLogisticFocalLoss(
         alpha=config.alpha, beta=config.beta)
+
+  raise ValueError('Empty loss config.')
+
+def _build_embedding_loss(loss_config):
+      """Builds a classification loss based on the loss config.
+
+  Args:
+    loss_config: A losses_pb2.ClassificationLoss object.
+
+  Returns:
+    Loss based on the config.
+
+  Raises:
+    ValueError: On invalid loss_config.
+  """
+  if not isinstance(loss_config, losses_pb2.EmbeddingLoss):
+    raise ValueError('loss_config not of type losses_pb2.ClassificationLoss.')
+  return losses.EmbeddingLoss()
 
   raise ValueError('Empty loss config.')

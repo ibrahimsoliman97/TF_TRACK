@@ -52,6 +52,8 @@ message ConvolutionalBoxPredictor {
   // module.?
   optional bool apply_sigmoid_to_scores = 9 [default = false];
 
+  optional int32 embedding_size = 13 [default = 0];
+
   optional float class_prediction_bias_init = 10 [default = 0.0];
 
   // Whether to use depthwise separable convolution for box predictor layers.

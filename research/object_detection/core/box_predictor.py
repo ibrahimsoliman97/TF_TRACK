@@ -32,6 +32,7 @@ import tensorflow.compat.v1 as tf
 BOX_ENCODINGS = 'box_encodings'
 CLASS_PREDICTIONS_WITH_BACKGROUND = 'class_predictions_with_background'
 MASK_PREDICTIONS = 'mask_predictions'
+EMBEDDING = 'embedding'
 
 
 class BoxPredictor(object):
