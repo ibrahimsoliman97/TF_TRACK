@@ -775,7 +775,7 @@ class L1LocalizationLoss(Loss):
     )
 
 class EmbeddingLoss(Loss):
-      """L1 loss or absolute difference.
+  """L1 loss or absolute difference.
   When used in a per-pixel manner, each pixel should be given as an anchor.
   """
   def _pairwise_distances(self, embeddings, squared=False):
@@ -932,6 +932,7 @@ class EmbeddingLoss(Loss):
   def compute_loss_triple_all(self, batch ):
     single_batch_pred, single_batch_gt = batch[0], batch[1]
     single_batch_pred = tf.tile(single_batch_pred, [2,1])
+    single_batch_pred = tf.nn.l2_normalize(single_batch_pred, dim=1)
     single_batch_gt = tf.tile(single_batch_gt, [2])
     zero_ = tf.constant(0, dtype=tf.float32)
     mask = tf.not_equal(single_batch_gt, zero_)
@@ -950,7 +951,7 @@ class EmbeddingLoss(Loss):
     # triplet_loss[i, j, k] will contain the triplet loss of anchor=i, positive=j, negative=k
     # Uses broadcasting where the 1st argument has shape (batch_size, batch_size, 1)
     # and the 2nd (batch_size, 1, batch_size)
-    triplet_loss = anchor_positive_dist - anchor_negative_dist + 1.5
+    triplet_loss = anchor_positive_dist - anchor_negative_dist + 5
 
     # Put to zero the invalid triplets
     # (where label(a) != label(p) or label(n) == label(a) or a == p)

@@ -82,7 +82,7 @@ class ConvolutionalEmbeddingHead(head.Head):
           rate=1, scope='EmbeddingEncodingPredictor_depthwise')
       embedding_encodings = slim.conv2d(
           embedding_encodings,
-          num_predictions_per_location * self._embedding_size, [7, 7],
+          num_predictions_per_location * self._embedding_size, [1, 1],
           activation_fn=None,
           normalizer_fn=None,
           normalizer_params=None,

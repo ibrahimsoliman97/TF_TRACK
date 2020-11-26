@@ -112,7 +112,6 @@ def build_convolutional_box_predictor(is_training,
     }
   else:
     other_heads = {}
-  other_heads = {}
   return convolutional_box_predictor.ConvolutionalBoxPredictor(
       is_training=is_training,
       num_classes=num_classes,

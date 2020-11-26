@@ -314,6 +314,8 @@ def add_output_tensor_nodes(postprocessed_tensors,
       detection_fields.detection_features)
   raw_boxes = postprocessed_tensors.get(detection_fields.raw_detection_boxes)
   raw_scores = postprocessed_tensors.get(detection_fields.raw_detection_scores)
+  raw_embedding = postprocessed_tensors.get(detection_fields.raw_embedding)
+  nms_embedding = postprocessed_tensors.get(detection_fields.embedding)
   classes = postprocessed_tensors.get(
       detection_fields.detection_classes) + label_id_offset
   keypoints = postprocessed_tensors.get(detection_fields.detection_keypoints)
@@ -341,6 +343,12 @@ def add_output_tensor_nodes(postprocessed_tensors,
   if raw_scores is not None:
     outputs[detection_fields.raw_detection_scores] = tf.identity(
         raw_scores, name=detection_fields.raw_detection_scores)
+  if raw_embedding is not None:
+    outputs[detection_fields.raw_embedding] = tf.identity(
+        raw_scores, name=detection_fields.raw_embedding)
+  if nms_embedding is not None:
+    outputs[detection_fields.embedding] = tf.identity(
+        nms_embedding, name=detection_fields.embedding)
   if keypoints is not None:
     outputs[detection_fields.detection_keypoints] = tf.identity(
         keypoints, name=detection_fields.detection_keypoints)

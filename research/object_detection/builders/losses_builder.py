@@ -267,7 +267,7 @@ def _build_classification_loss(loss_config):
   raise ValueError('Empty loss config.')
 
 def _build_embedding_loss(loss_config):
-      """Builds a classification loss based on the loss config.
+  """Builds a classification loss based on the loss config.
 
   Args:
     loss_config: A losses_pb2.ClassificationLoss object.
@@ -279,7 +279,5 @@ def _build_embedding_loss(loss_config):
     ValueError: On invalid loss_config.
   """
   if not isinstance(loss_config, losses_pb2.EmbeddingLoss):
-    raise ValueError('loss_config not of type losses_pb2.ClassificationLoss.')
+    raise ValueError('loss_config not of type losses_pb2.EmbeddingLoss.')
   return losses.EmbeddingLoss()
-
-  raise ValueError('Empty loss config.')
